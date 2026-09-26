@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fashion Design - Interactive Navigation</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #fff7f9;
+            color: #333;
+        }
+
+        /* ===== NAVIGATION BAR ===== */
+        .navbar {
+            position: fixed;
+            top: 15px;
+            left: 5%;
+            width: 90%;
+            padding: 16px 30px;
+            background: rgba(80, 20, 50, 0.92);
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: 0.5s;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Navbar changes after scrolling */
+        .navbar.scrolled {
+            top: 0;
+            left: 0;
+            width: 100%;
+            border-radius: 0;
+            background: #8e3157;
+            padding: 12px 40px;
+        }
+
+        /* Fashion Logo */
+        .logo {
+            color: white;
+            font-size: 26px;
+            font-weight: bold;
+            letter-spacing: 3px;
+        }
+
+        .logo span {
+            color: #ffd166;
+        }
+
+        /* Menu */
+        .menu {
+            display: flex;
+            list-style: none;
+            gap: 8px;
+        }
+
+        .menu a {
+            position: relative;
+            color: white;
+            text-decoration: none;
+            padding: 11px 17px;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        /* Hover Effect */
+        .menu a:hover {
+            background: #ffd166;
+            color: #501432;
+            transform: translateY(-4px);
+        }
+
+        /* Fashion underline */
+        .menu a::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: 5px;
+            width: 0;
+            height: 2px;
+            background: #fff;
+            transform: translateX(-50%);
+            transition: 0.3s;
+        }
+
+        .menu a:hover::after {
+            width: 60%;
+        }
+
+        /* Active menu */
+        .menu a.active {
+            background: #f3a6b8;
+            color: #501432;
+        }
+
+        /* ===== SECTIONS ===== */
+        section {
+            min-height: 100vh;
+            padding: 150px 30px 60px;
+            text-align: center;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Home */
+        #home {
+            background:
+                linear-gradient(rgba(80,20,50,0.45),
+                rgba(80,20,50,0.45)),
+                #f7d6df;
+            color: white;
+        }
+
+        #home h1 {
+            font-size: 60px;
+            letter-spacing: 5px;
+        }
+
+        #home p {
+            font-size: 21px;
+            margin-top: 15px;
+        }
+
+        /* Other sections */
+        #collections {
+            background: #fff0f4;
+        }
+
+        #designers {
+            background: #f9e6ee;
+        }
+
+        #contact {
+            background: #f4d7e2;
+        }
+
+        h1 {
+            font-size: 45px;
+            color: #691d42;
+            margin-bottom: 20px;
+        }
+
+        #home h1 {
+            color: white;
+        }
+
+        p {
+            max-width: 700px;
+            font-size: 18px;
+            line-height: 1.7;
+        }
+
+        /* ===== FASHION CARDS ===== */
+        .cards {
+            display: flex;
+            gap: 25px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .card {
+            width: 220px;
+            padding: 30px 20px;
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 8px 20px rgba(80,20,50,0.15);
+            transition: 0.4s;
+        }
+
+        .card:hover {
+            transform: translateY(-12px) scale(1.03);
+            background: #ffdce7;
+        }
+
+        .card .icon {
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            color: #691d42;
+            margin-bottom: 10px;
+        }
+
+        /* ===== BUTTON ===== */
+        .btn {
+            margin-top: 30px;
+            padding: 13px 30px;
+            background: #691d42;
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #ffd166;
+            color: #501432;
+            transform: scale(1.08);
+        }
+
+        /* ===== MOBILE MENU ===== */
+        .menu-icon {
+            display: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 750px) {
+
+            .navbar {
+                width: 94%;
+                left: 3%;
+            }
+
+            .menu-icon {
+                display: block;
+            }
+
+            .menu {
+                display: none;
+                position: absolute;
+                top: 65px;
+                left: 0;
+                width: 100%;
+                background: #501432;
+                border-radius: 15px;
+                flex-direction: column;
+                padding: 15px;
+                text-align: center;
+            }
+
+            .menu.show {
+                display: flex;
+            }
+
+            #home h1 {
+                font-size: 40px;
+            }
+
+            h1 {
+                font-size: 35px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ===== NAVIGATION ===== -->
+    <nav class="navbar" id="navbar">
+
+        <div class="logo">
+            FASH<span>ION</span>
+        </div>
+
+        <div class="menu-icon" onclick="toggleMenu()">
+            ☰
+        </div>
+
+        <ul class="menu" id="menu">
+            <li><a href="#home" class="active">Home</a></li>
+            <li><a href="#collections">Collections</a></li>
+            <li><a href="#designers">Designers</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+
+    </nav>
+
+
+    <!-- ===== HOME ===== -->
+    <section id="home">
+
+        <h1>FASHION STUDIO</h1>
+
+        <p>
+            Discover creativity, style and elegance.
+            Explore the latest ideas in fashion design.
+        </p>
+
+        <a href="#collections" class="btn">
+            Explore Collection ↓
+        </a>
+
+    </section>
+
+
+    <!-- ===== COLLECTIONS ===== -->
+    <section id="collections">
+
+        <h1>Our Collections</h1>
+
+        <p>
+            Explore different fashion styles designed with
+            creativity and modern trends.
+        </p>
+
+        <div class="cards">
+
+            <div class="card">
+                <div class="icon">👗</div>
+                <h3>Designer Wear</h3>
+                <p>Elegant outfits for special occasions.</p>
+            </div>
+
+            <div class="card">
+                <div class="icon">👚</div>
+                <h3>Casual Style</h3>
+                <p>Comfortable and stylish everyday fashion.</p>
+            </div>
+
+            <div class="card">
+                <div class="icon">💎</div>
+                <h3>Luxury Look</h3>
+                <p>Creative designs with a premium appearance.</p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ===== DESIGNERS ===== -->
+    <section id="designers">
+
+        <h1>Fashion Designers</h1>
+
+        <p>
+            Fashion designers combine colors, fabrics, patterns
+            and creativity to create unique styles.
+        </p>
+
+        <div class="cards">
+
+            <div class="card">
+                <div class="icon">✂️</div>
+                <h3>Creative Design</h3>
+                <p>Turning ideas into beautiful outfits.</p>
+            </div>
+
+            <div class="card">
+                <div class="icon">🎨</div>
+                <h3>Color & Style</h3>
+                <p>Creating attractive combinations of colors.</p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ===== CONTACT ===== -->
+    <section id="contact">
+
+        <h1>Contact Fashion Studio</h1>
+
+        <p>
+            Have a creative fashion idea?
+            Let us turn your imagination into design.
+        </p>
+
+        <a href="#home" class="btn">
+            ↑ Back to Top
+        </a>
+
+    </section>
+
+
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+
+        /* Change navbar while scrolling */
+        window.addEventListener("scroll", function() {
+
+            var navbar = document.getElementById("navbar");
+
+            if (window.scrollY > 80) {
+                navbar.classList.add("scrolled");
+            }
+            else {
+                navbar.classList.remove("scrolled");
+            }
+
+        });
+
+
+        /* Mobile menu */
+        function toggleMenu() {
+
+            var menu = document.getElementById("menu");
+
+            menu.classList.toggle("show");
+
+        }
+
+
+        /* Active menu item */
+        var links = document.querySelectorAll(".menu a");
+
+        links.forEach(function(link) {
+
+            link.addEventListener("click", function() {
+
+                links.forEach(function(item) {
+                    item.classList.remove("active");
+                });
+
+                this.classList.add("active");
+
+                document.getElementById("menu")
+                    .classList.remove("show");
+
+            });
+
+        });
+
+    </script>
+
+</body>
+</html>
+
